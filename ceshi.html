@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你可以做我的恋人吗</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .question {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
+            to { text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3); }
+        }
+
+        .buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a5a);
+            transform: scale(1);
+        }
+
+        .btn-yes:hover {
+            background: linear-gradient(45deg, #ff5252, #e53e3e);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-no {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            transform: scale(1);
+        }
+
+        .btn-no:hover {
+            background: linear-gradient(45deg, #3db8b0, #3a8f82);
+        }
+
+        .love-message {
+            display: none;
+            animation: fadeInScale 1s ease-out;
+        }
+
+        .love-text {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #48cae4, #ff6b6b);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbowText 2s ease-in-out infinite;
+        }
+
+        @keyframes rainbowText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            color: #ff6b6b;
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="container">
+        <div id="questionSection">
+            <h1 class="question">你可以做我的恋人吗？</h1>
+            <div class="buttons">
+                <button class="btn btn-yes" id="yesBtn">可以</button>
+                <button class="btn btn-no" id="noBtn">不可以</button>
+            </div>
+        </div>
+        
+        <div class="love-message" id="loveMessage">
+            <div class="love-text">喜欢你 ❤️</div>
+            <p style="font-size: 1.5rem; opacity: 0.9;">谢谢你愿意成为我的恋人！</p>
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionSection = document.getElementById('questionSection');
+        const loveMessage = document.getElementById('loveMessage');
+        const heartsContainer = document.getElementById('hearts');
+
+        let noClickCount = 0;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        yesBtn.addEventListener('click', function() {
+            questionSection.style.display = 'none';
+            loveMessage.style.display = 'block';
+            
+            // 创建爱心雨效果
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => createHeart(), i * 200);
+            }
+        });
+
+        noBtn.addEventListener('click', function() {
+            noClickCount++;
+            
+            // 放大"可以"按钮
+            const yesScale = 1 + (noClickCount * 0.2);
+            yesBtn.style.transform = `scale(${yesScale})`;
+            
+            // 缩小"不可以"按钮
+            const noScale = Math.max(0.3, 1 - (noClickCount * 0.15));
+            noBtn.style.transform = `scale(${noScale})`;
+            
+            // 添加一些特效
+            yesBtn.style.boxShadow = `0 ${4 + noClickCount * 2}px ${15 + noClickCount * 5}px rgba(255, 107, 107, ${0.2 + noClickCount * 0.1})`;
+            
+            // 当"不可以"按钮很小时，添加一些有趣的文字变化
+            if (noClickCount >= 3) {
+                noBtn.textContent = '真的不可以？';
+            }
+            if (noClickCount >= 5) {
+                noBtn.textContent = '考虑一下？';
+            }
+            if (noClickCount >= 7) {
+                noBtn.textContent = '拜托了';
+            }
+            if (noClickCount >= 10) {
+                noBtn.style.display = 'none';
+                yesBtn.textContent = '只能选这个了 😊';
+            }
+        });
+
+        // 添加按钮悬停效果
+        yesBtn.addEventListener('mouseenter', function() {
+            this.style.animation = 'pulse 0.5s ease-in-out infinite alternate';
+        });
+
+        yesBtn.addEventListener('mouseleave', function() {
+            this.style.animation = '';
+        });
+    </script>
+
+    <style>
+        @keyframes pulse {
+            from { transform: scale(var(--current-scale, 1)); }
+            to { transform: scale(calc(var(--current-scale, 1) * 1.1)); }
+        }
+    </style>
+</body>
+</html>
